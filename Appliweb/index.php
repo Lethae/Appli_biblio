@@ -8,15 +8,15 @@ require_once('includes/configuration.php');
 require_once('includes/header.php');
 
 // reception des variables get, post
-$action 	= isset($_GET['action']) ? $_GET['action'] : NULL ;
-$theme 		= isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ;
+$action 	= mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL); 
+$theme 		= mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' );
 
-$login 		= isset($_POST['login']) ? $_POST['login'] : NULL ;
-$password 	= isset($_POST['password']) ? $_POST['password'] : NULL ;
-$niveau = isset($_POST['niveau']) ? $_POST['niveau'] : '2';
-$email 	= isset($_POST['email']) ? $_POST['email'] : NULL ;
-$search 	= isset($_POST['search']) ? $_POST['search'] : NULL ;
-$id	= isset($_GET['id']) ? $_GET['id'] : NULL ;
+$login 		= mysqli_real_escape_string($connexion,isset($_POST['login']) ? $_POST['login'] : NULL); 
+$password 	= mysqli_real_escape_string($connexion,isset($_POST['password']) ? $_POST['password'] : NULL); 
+$niveau = mysqli_real_escape_string($connexion,isset($_POST['niveau']) ? $_POST['niveau'] : '2');
+$email 	= mysqli_real_escape_string($connexion,isset($_POST['email']) ? $_POST['email'] : NULL);
+$search 	= mysqli_real_escape_string($connexion,isset($_POST['search']) ? $_POST['search'] : NULL);
+$id	= mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL);
 
 // Tentative de login
 if ($login && $password)
@@ -34,7 +34,6 @@ if ($login && $password)
         	$errorLogin = true;
         }
 }
-
 
 // Déconnexion utilisateur
 if ($action == 'logout') {
@@ -56,18 +55,17 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
 require_once('template/headerco.php');
 
-
 $sql        	= getSql($theme, $search, $connexion);
 $sqlResult 	= mysqli_query($connexion, $sql);
 $rowCount   	= mysqli_num_rows($sqlResult);
 
-	// affichage des resultats de la recherche utilisateur
+// affichage des resultats de la recherche utilisateur
 	if ( isset($rowCount) && $rowCount )  {
 	    while($row = mysqli_fetch_assoc($sqlResult))
 	    {
 	        $result[] 	= $row;
 	    }
-	    echo getHtmlTable($result);
+	    echo getHtmlTable($result,$action);
 	} else {
 	    echo "pas de résultats";
 	}
@@ -78,10 +76,19 @@ $rowCount   	= mysqli_num_rows($sqlResult);
 		echo "Suppression réussie $id";
 	}
 	
-		if($action == "modif") {
-		$sql = modifSql($theme, $connexion, $id);
+	if($action == "lien") {
+		$sql = lienSql($theme, $connexion, $id);
 		$sqlResult = mysqli_query($connexion, $sql);
-		echo "Modification réussie $id";
+		echo "<br/>";
+		if ( isset($rowCount) && $rowCount )  {
+	    while($row = mysqli_fetch_assoc($sqlResult))
+	    {
+	        $result[] 	= $row;
+	    }
+	    echo getFiche($sqlResult,$action);
+	} else {
+	    echo "pas de résultats";
+	}
 	}
 	
 } else { // User non connecté

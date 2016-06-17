@@ -17,7 +17,18 @@ function getSql($theme, $search, $connexion)
         $sql 		= "SELECT * FROM $table";      
     }
     if ($search) {
+		if ($theme == "auteur") {
         $sql.= " WHERE nom LIKE '%$search%'";
+		}
+		if ($theme == "livre") {
+        $sql.= " WHERE titre LIKE '%$search%'";
+		}
+		if ($theme == "editeur") {
+        $sql.= " WHERE nom LIKE '%$search%'";
+		}
+		if ($theme == "utilisateur") {
+        $sql.= " WHERE identifiant LIKE '%$search%'";
+		}
     }
     return $sql;
 }
@@ -34,3 +45,13 @@ function supprSql($theme, $connexion, $id)
 	return $sql;
 }
 
+function lienSql($theme, $connexion, $id)
+{
+    if($theme == 'auteur') {
+        $sql 		= "SELECT * FROM livre WHERE id_auteur = $id;";      
+    }
+	else{;
+        $sql 		= "SELECT auteur.id, nom, prenom, date_naissance FROM auteur INNER JOIN livre ON id_auteur = auteur.id WHERE id_auteur = $id;";      
+	}
+	return $sql;
+}

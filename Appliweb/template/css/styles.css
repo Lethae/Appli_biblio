@@ -10,7 +10,7 @@ table, th, td {
 }
 
 body {
-  padding-top: 50px;
+  padding-top: 100px;
   padding-bottom: 40px;
   background-color: #eee;
   margin: 0 auto;
@@ -63,4 +63,8 @@ body {
 	height: 100px;
 	width: 300px;
 	lineheight: 0px;
+}
+
+select {
+	width: 300px;
 }

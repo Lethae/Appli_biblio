@@ -11,23 +11,127 @@ require_once('includes/header.php');
 require_once('template/header.php');
 
 // reception des variables get, post
-$action 	= isset($_GET['action']) ? $_GET['action'] : NULL ;
-$theme 		= isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ;
+$action 	= mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL) ;
+$theme 		= mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ;
+// $id	= mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL) ;
 
-$login 		= isset($_POST['login']) ? $_POST['login'] : NULL ;
-$password 	= isset($_POST['password']) ? $_POST['password'] : NULL ;
+$login 		= mysqli_real_escape_string($connexion,isset($_POST['login']) ? $_POST['login'] : NULL) ;
+$password 	= mysqli_real_escape_string($connexion,isset($_POST['password']) ? $_POST['password'] : NULL) ;
 
-$name 	= isset($_POST['name']) ? $_POST['name'] : NULL ;
-$surname 	= isset($_POST['surname']) ? $_POST['surname'] : NULL ;
-$dateN 	= isset($_POST['dateN']) ? $_POST['dateN'] : NULL ;
+//Add auteur
+$name 	= mysqli_real_escape_string($connexion,isset($_POST['name']) ? $_POST['name'] : NULL) ;
+$surname 	= mysqli_real_escape_string($connexion,isset($_POST['surname']) ? $_POST['surname'] : NULL) ;
+$dateN 	= mysqli_real_escape_string($connexion,isset($_POST['dateN']) ? $_POST['dateN'] : NULL) ;
 
-$title 	= isset($_POST['title']) ? $_POST['title'] : NULL ;
-$description	= isset($_POST['description']) ? $_POST['description'] : NULL ;
-$dateP 	= isset($_POST['dateP']) ? $_POST['dateP'] : NULL ;
+//Add livre 
+$title 	= mysqli_real_escape_string($connexion,isset($_POST['title']) ? $_POST['title'] : NULL) ;
+$description	= mysqli_real_escape_string($connexion,isset($_POST['description']) ? $_POST['description'] : NULL) ;
+$auteur	= mysqli_real_escape_string($connexion,isset($_POST['auteur']) ? $_POST['auteur'] : NULL) ;
+$editeur	= mysqli_real_escape_string($connexion,isset($_POST['editeur']) ? $_POST['editeur'] : NULL) ;
+$dateP 	= mysqli_real_escape_string($connexion,isset($_POST['dateP']) ? $_POST['dateP'] : NULL) ;
 
-$login_r 		= isset($_POST['login_r']) ? $_POST['login_r'] : NULL ;
-$password_r 	= isset($_POST['password_r']) ? $_POST['password_r'] : NULL ;
-$email 	= isset($_POST['email']) ? $_POST['email'] : NULL ;
+// Constantes
+define('TARGET', '/images/');    // Repertoire cible
+define('MAX_SIZE', 100000);    // Taille max en octets du fichier
+define('WIDTH_MAX', 800);    // Largeur max de l'image en pixels
+define('HEIGHT_MAX', 800);    // Hauteur max de l'image en pixels
+ 
+// Tableaux de donnees
+$tabExt = array('jpg','gif','png','jpeg');    // Extensions autorisees
+$infosImg = array();
+ 
+// Variables
+$extension = '';
+$message = '';
+$nomImage = '';
+ 
+/************************************************************
+ * Creation du repertoire cible si inexistant
+ *************************************************************/
+/*if( !is_dir(TARGET) ) {
+  if( !mkdir(TARGET, 0755) ) {
+    exit('Erreur : le répertoire cible ne peut-être créé ! Vérifiez que vous diposiez des droits suffisants pour le faire ou créez le manuellement !');
+  }
+}
+ */
+/************************************************************
+ * Script d'upload
+ *************************************************************/
+if(!empty($_POST))
+{
+  // On verifie si le champ est rempli
+  if( !empty($_FILES['fichier']['name']) )
+  {
+    // Recuperation de l'extension du fichier
+    $extension  = pathinfo($_FILES['fichier']['name'], PATHINFO_EXTENSION);
+ 
+    // On verifie l'extension du fichier
+    if(in_array(strtolower($extension),$tabExt))
+    {
+      // On recupere les dimensions du fichier
+      $infosImg = getimagesize($_FILES['fichier']['tmp_name']);
+ 
+      // On verifie le type de l'image
+      if($infosImg[2] >= 1 && $infosImg[2] <= 14)
+      {
+        // On verifie les dimensions et taille de l'image
+        if(($infosImg[0] <= WIDTH_MAX) && ($infosImg[1] <= HEIGHT_MAX) && (filesize($_FILES['fichier']['tmp_name']) <= MAX_SIZE))
+        {
+          // Parcours du tableau d'erreurs
+          if(isset($_FILES['fichier']['error']) 
+            && UPLOAD_ERR_OK === $_FILES['fichier']['error'])
+          {
+            // On renomme le fichier
+            $nomImage = md5(uniqid()) .'.'. $extension;
+ 
+            // Si c'est OK, on teste l'upload
+            if(move_uploaded_file($_FILES['fichier']['tmp_name'], TARGET.$nomImage))
+            {
+              $message = 'Upload réussi !';
+            }
+            else
+            {
+              // Sinon on affiche une erreur systeme
+              $message = 'Problème lors de l\'upload !';
+            }
+          }
+          else
+          {
+            $message = 'Une erreur interne a empêché l\'uplaod de l\'image';
+          }
+        }
+        else
+        {
+          // Sinon erreur sur les dimensions et taille de l'image
+          $message = 'Erreur dans les dimensions de l\'image !';
+        }
+      }
+      else
+      {
+        // Sinon erreur sur le type de l'image
+        $message = 'Le fichier à uploader n\'est pas une image !';
+      }
+    }
+    else
+    {
+      // Sinon on affiche une erreur pour l'extension
+      $message = 'L\'extension du fichier est incorrecte !';
+    }
+  }
+  else
+  {
+    // Sinon on affiche une erreur pour le champ vide
+    $message = 'Veuillez remplir le formulaire svp !';
+  }
+}
+
+//Add editeur
+$nameed 	= mysqli_real_escape_string($connexion,isset($_POST['nameed']) ? $_POST['nameed'] : NULL) ;
+
+//Enregistrement
+$login_r 		= mysqli_real_escape_string($connexion,isset($_POST['login_r']) ? $_POST['login_r'] : NULL) ;
+$password_r 	= mysqli_real_escape_string($connexion,isset($_POST['password_r']) ? $_POST['password_r'] : NULL) ;
+$email 	= mysqli_real_escape_string($connexion,isset($_POST['email']) ? $_POST['email'] : NULL) ;
 
 // chargement des fonction de creation des requetes sql
 require_once('includes/sql.php');
@@ -72,11 +176,63 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 			<label for="inputTitle" class="sr-only">Titre</label>
 			<input type="text" name="title" id="inputTitle" class="form-control" placeholder="Titre" required autofocus>
 			
+			<label for="inputAuteur" class="sr-only">Auteur</label>
+			<select name="auteur" id="inputAuteur">
+			
+			<?php
+				$sql = "SELECT * FROM auteur";
+				$reponse = mysqli_query($connexion, $sql);
+				
+				while ($donnees = mysqli_fetch_assoc($reponse))
+				{
+			?>
+					<option value="<?php echo $donnees['id']; ?> "> <?php echo $donnees['nom']; ?> </option>
+				<?php
+				}
+				?>
+			</select>
+			
+			<label for="inputEditeur" class="sr-only">Editeur</label>
+			<select name="editeur" id="inputEditeur">
+			
+			<?php
+				$sql = "SELECT * FROM editeur";
+				$reponse = mysqli_query($connexion, $sql);
+				
+				while ($donnees = mysqli_fetch_assoc($reponse))
+				{
+			?>
+					<option value="<?php echo $donnees['id']; ?> "> <?php echo $donnees['nom']; ?> </option>
+				<?php
+				}
+				?>
+			</select>
+			
 			<label for="inputDescription" class="sr-only">Description</label>
 			<textarea name="description" id="inputDescription" class="form-control textzone" placeholder="Description"></textarea>
 			
 			<label for="inputDateP" class="sr-only">Date de Publication</label>
 			<input type="text" name="dateP" id="inputDateP" class="form-control" placeholder="Date de Publication (aaaa-mm-jj)">
+	
+            <label for="fichier_a_uploader" title="Recherchez le fichier à uploader !">Envoyer le fichier :</label>
+            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_SIZE; ?>" />
+            <input name="fichier" type="file" id="fichier_a_uploader" />
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter</button>
+		  </form>
+
+		</div> <!-- /container -->
+
+<?php
+	}
+	elseif ($theme=="editeur") {
+?>
+
+		<div class="container">
+		  <form action="ajout.php" method="post" class="form-signin">
+			<h2 class="form-signin-heading">Ajouter un éditeur</h2>
+			
+			<label for="inputNameed" class="sr-only">Nom</label>
+			<input type="text" name="nameed" id="inputNameed" class="form-control" placeholder="Nom" required autofocus>
 			
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter</button>
 		  </form>
@@ -124,14 +280,27 @@ if ($name && $surname && $dateN)
 		echo "Une erreur a eu lieu. Merci de réessayer.";
 }
 
-if ($title && $description && $dateP)
+if ($auteur && $editeur && $title && $description && $dateP)
 {
-	$sql = "INSERT INTO livre VALUES ('', '1', '1', '$title', '$description', '$dateP');";
+	$sql = "INSERT INTO livre VALUES ('', '$auteur', '$editeur', '$title', '$description', '', '$dateP');";
 	mysqli_query($connexion, $sql);
 	
 	if(mysqli_affected_rows($connexion) == 1)
 	{
 		echo "Vous avez bien ajouté le livre $title";
+	}
+	else
+		echo "Une erreur a eu lieu. Merci de réessayer.";
+}
+
+if ($nameed)
+{
+	$sql = "INSERT INTO editeur VALUES ('', '$nameed');";
+	mysqli_query($connexion, $sql);
+	
+	if(mysqli_affected_rows($connexion) == 1)
+	{
+		echo "Vous avez bien ajouté l'éditeur $nameed";
 	}
 	else
 		echo "Une erreur a eu lieu. Merci de réessayer.";
@@ -145,7 +314,7 @@ if ($login_r && $email && $password_r)
 	
 	if(mysqli_affected_rows($connexion) == 1)
 	{
-		echo "Vous avez bien été inscrit. Merci de revenir à l'accueil pour vous connecter.";
+		echo "Vous avez bien inscrit cet utilisateur.";
 	}
 	else
 		echo "Une erreur a eu lieu. Merci de réessayer.";
