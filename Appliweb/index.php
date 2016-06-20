@@ -8,6 +8,7 @@ require_once('includes/configuration.php');
 require_once('includes/header.php');
 
 // reception des variables get, post
+<<<<<<< HEAD
 $action 	= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL)); 
 $theme 		= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ));
 
@@ -17,6 +18,17 @@ $niveau = htmlentities(mysqli_real_escape_string($connexion,isset($_POST['niveau
 $email 	= htmlentities(mysqli_real_escape_string($connexion,isset($_POST['email']) ? $_POST['email'] : NULL));
 $search 	= htmlentities(mysqli_real_escape_string($connexion,isset($_POST['search']) ? $_POST['search'] : NULL));
 $id	= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL));
+=======
+$action 	= mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL); 
+$theme 		= mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' );
+
+$login 		= mysqli_real_escape_string($connexion,isset($_POST['login']) ? $_POST['login'] : NULL); 
+$password 	= mysqli_real_escape_string($connexion,isset($_POST['password']) ? $_POST['password'] : NULL); 
+$niveau = mysqli_real_escape_string($connexion,isset($_POST['niveau']) ? $_POST['niveau'] : '2');
+$email 	= mysqli_real_escape_string($connexion,isset($_POST['email']) ? $_POST['email'] : NULL);
+$search 	= mysqli_real_escape_string($connexion,isset($_POST['search']) ? $_POST['search'] : NULL);
+$id	= mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL);
+>>>>>>> origin/master
 
 // Tentative de login
 if ($login && $password)
@@ -53,7 +65,11 @@ require_once('template/header.php');
 
 if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
+<<<<<<< HEAD
 require_once('template/headerco.php'); 					//On récupère le menu de quand on est connecté
+=======
+require_once('template/headerco.php');
+>>>>>>> origin/master
 
 $sql        	= getSql($theme, $search, $connexion);
 $sqlResult 	= mysqli_query($connexion, $sql);
@@ -77,7 +93,10 @@ $rowCount   	= mysqli_num_rows($sqlResult);
 		echo "Suppression réussie $id";
 	}
 	
+<<<<<<< HEAD
 // Accès aux éléments liés entre eux
+=======
+>>>>>>> origin/master
 	if($action == "lien") {
 		$sql = lienSql($theme, $connexion, $id);
 		$sqlResult = mysqli_query($connexion, $sql);

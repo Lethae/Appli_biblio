@@ -9,6 +9,7 @@ require_once('includes/header.php');
 
 
 // reception des variables get, post
+<<<<<<< HEAD
 $action 	= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL)) ;
 $theme 		= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur')) ;
 $id	= htmlentities(mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL)) ;
@@ -54,6 +55,53 @@ $login_u 		= htmlentities(mysqli_real_escape_string($connexion,isset($_POST['log
 $password_u 	= htmlentities(mysqli_real_escape_string($connexion,isset($_POST['password_u']) ? $_POST['password_u'] : NULL)) ;
 $email_u 	= htmlentities(mysqli_real_escape_string($connexion,isset($_POST['email_u']) ? $_POST['email_u'] : NULL)) ;
 $level_u = htmlentities(mysqli_real_escape_string($connexion,isset($_POST['level_u']) ? $_POST['level_u'] : NULL)) ;
+=======
+$action 	= mysqli_real_escape_string($connexion,isset($_GET['action']) ? $_GET['action'] : NULL) ;
+$theme 		= mysqli_real_escape_string($connexion,isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur') ;
+$id	= mysqli_real_escape_string($connexion,isset($_GET['id']) ? $_GET['id'] : NULL) ;
+
+$login 		= mysqli_real_escape_string($connexion,isset($_POST['login']) ? $_POST['login'] : NULL) ;
+$password 	= mysqli_real_escape_string($connexion,isset($_POST['password']) ? $_POST['password'] : NULL) ;
+
+//Add auteur
+$name 	= mysqli_real_escape_string($connexion,isset($_POST['name']) ? $_POST['name'] : NULL) ;
+$surname 	= mysqli_real_escape_string($connexion,isset($_POST['surname']) ? $_POST['surname'] : NULL) ;
+$dateN 	= mysqli_real_escape_string($connexion,isset($_POST['dateN']) ? $_POST['dateN'] : NULL) ;
+
+//Add livre 
+$title 	= mysqli_real_escape_string($connexion,isset($_POST['title']) ? $_POST['title'] : NULL) ;
+$description	= mysqli_real_escape_string($connexion,isset($_POST['description']) ? $_POST['description'] : NULL) ;
+$dateP 	= mysqli_real_escape_string($connexion,isset($_POST['dateP']) ? $_POST['dateP'] : NULL) ;
+
+//Add editeur
+$nameed 	= mysqli_real_escape_string($connexion,isset($_POST['nameed']) ? $_POST['nameed'] : NULL) ;
+
+//Update auteur
+$name_u 	= mysqli_real_escape_string($connexion,isset($_POST['name_u']) ? $_POST['name_u'] : NULL) ;
+$surname_u 	= mysqli_real_escape_string($connexion,isset($_POST['surname_u']) ? $_POST['surname_u'] : NULL) ;
+$dateN_u 	= mysqli_real_escape_string($connexion,isset($_POST['dateN_u']) ? $_POST['dateN_u'] : NULL) ;
+
+//Update livre 
+$title_u 	= mysqli_real_escape_string($connexion,isset($_POST['title_u']) ? $_POST['title_u'] : NULL) ;
+$id_auteur_u	= mysqli_real_escape_string($connexion,isset($_POST['id_auteur_u']) ? $_POST['id_auteur_u'] : NULL) ;
+$id_editeur_u	= mysqli_real_escape_string($connexion,isset($_POST['id_editeur_u']) ? $_POST['id_editeur_u'] : NULL) ;
+$description_u	= mysqli_real_escape_string($connexion,isset($_POST['description_u']) ? $_POST['description_u'] : NULL) ;
+$dateP_u 	= mysqli_real_escape_string($connexion,isset($_POST['dateP_u']) ? $_POST['dateP_u'] : NULL) ;
+
+//Update editeur
+$nameed_u 	= mysqli_real_escape_string($connexion,isset($_POST['nameed_u']) ? $_POST['nameed_u'] : NULL) ;
+
+//Enregistrement
+$login_r 		= mysqli_real_escape_string($connexion,isset($_POST['login_r']) ? $_POST['login_r'] : NULL) ;
+$password_r 	= mysqli_real_escape_string($connexion,isset($_POST['password_r']) ? $_POST['password_r'] : NULL) ;
+$email 	= mysqli_real_escape_string($connexion,isset($_POST['email']) ? $_POST['email'] : NULL) ;
+
+//Update user
+$login_u 		= mysqli_real_escape_string($connexion,isset($_POST['login_u']) ? $_POST['login_u'] : NULL) ;
+$password_u 	= mysqli_real_escape_string($connexion,isset($_POST['password_u']) ? $_POST['password_u'] : NULL) ;
+$email_u 	= mysqli_real_escape_string($connexion,isset($_POST['email_u']) ? $_POST['email_u'] : NULL) ;
+$level_u = mysqli_real_escape_string($connexion,isset($_POST['level_u']) ? $_POST['level_u'] : NULL) ;
+>>>>>>> origin/master
 
 // chargement des fonction de creation des requetes sql
 require_once('includes/sql.php');
@@ -65,7 +113,11 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
 	require_once('template/headerco.php');
 
+<<<<<<< HEAD
 	if($theme=="auteur"){																							//Formulaire de modification d'auteur
+=======
+	if($theme=="auteur"){
+>>>>>>> origin/master
 		$sql = "SELECT nom, prenom, date_naissance FROM auteur WHERE id='$id'";
 		$resultat = mysqli_query($connexion, $sql);
 		$auteur_u = mysqli_fetch_assoc($resultat);
@@ -93,7 +145,11 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
 <?php
 	}
+<<<<<<< HEAD
 	elseif ($theme=="livre") {																							//Formulaire de modification de livre
+=======
+	elseif ($theme=="livre") {
+>>>>>>> origin/master
 		$sql = "SELECT titre, date_publication FROM livre WHERE id='$id'";
 		$resultat = mysqli_query($connexion, $sql);
 		$livre_u = mysqli_fetch_assoc($resultat);
@@ -151,7 +207,11 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
 <?php
 	}
+<<<<<<< HEAD
 	elseif ($theme=="editeur") {																							//Formulaire de modification d'éditeur
+=======
+	elseif ($theme=="editeur") {
+>>>>>>> origin/master
 		$sql = "SELECT nom FROM editeur WHERE id='$id'";
 		$resultat = mysqli_query($connexion, $sql);
 		$editeur_u = mysqli_fetch_assoc($resultat);
@@ -171,8 +231,13 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 
 <?php
 	}
+<<<<<<< HEAD
 	else{																																//Formulaire de modification d'utilisateur
 		$sql = "SELECT * FROM utilisateur WHERE id='$id'";
+=======
+	else{
+		$sql = "SELECT identifiant, email, mot_de_passe, niveau FROM utilisateur WHERE id='$id'";
+>>>>>>> origin/master
 		$resultat = mysqli_query($connexion, $sql);
 		$user_u = mysqli_fetch_assoc($resultat);
 
@@ -204,7 +269,10 @@ if (isset($_SESSION['user']) && $_SESSION['user']) { // User connecté
 	
 }
 
+<<<<<<< HEAD
 																							// Auteur
+=======
+>>>>>>> origin/master
 if ($name_u && $surname_u && $dateN_u)
 {
 	$sql = "UPDATE auteur SET nom = '$name_u', prenom = '$surname_u', date_naissance = '$dateN_u' WHERE id = '$id';";
@@ -217,8 +285,12 @@ if ($name_u && $surname_u && $dateN_u)
 	else
 		echo "Une erreur a eu lieu. Merci de réessayer.";
 }
+<<<<<<< HEAD
 																							
 																							// Livre
+=======
+
+>>>>>>> origin/master
 if ($id_auteur_u && $id_editeur_u && $title_u && $description_u && $dateP_u)
 {
 	$sql = "UPDATE livre SET id_auteur = '$id_auteur_u', id_editeur = '$id_editeur_u', titre = '$title_u', description = '$description_u', date_publication = '$dateP_u' WHERE id = '$id';";
@@ -231,8 +303,12 @@ if ($id_auteur_u && $id_editeur_u && $title_u && $description_u && $dateP_u)
 	else
 		echo "Une erreur a eu lieu. Merci de réessayer.";
 }
+<<<<<<< HEAD
 																						
 																							// Editeur
+=======
+
+>>>>>>> origin/master
 if ($nameed_u)
 {
 	$sql = "UPDATE editeur SET nom = '$nameed_u' WHERE id = '$id';";
@@ -246,7 +322,10 @@ if ($nameed_u)
 		echo "Une erreur a eu lieu. Merci de réessayer.";
 }
 
+<<<<<<< HEAD
 																							// Utilisateur
+=======
+>>>>>>> origin/master
 if ($login_u && $email_u && $password_u && $level_u)
 {
 	$password_u = md5($password_u);

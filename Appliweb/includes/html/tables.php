@@ -16,6 +16,7 @@ function getHtmlTable($array)
 	{	
 		$table.= "<tr>";
 		foreach ($item as $key => $value) {
+<<<<<<< HEAD
 			if($theme=='auteur' || $theme=='editeur') {
 			$table.= "<td><a href=index.php?recherche=$theme&action=lien&id=".$item['id'].">".$value."</a></td>";
 			}
@@ -25,6 +26,9 @@ function getHtmlTable($array)
 			else{
 			$table.= "<td>$value</td>";
 			}
+=======
+			$table.= "<td><a href=index.php?recherche=$theme&action=lien&id=".$item['id'].">".$value."</a></td>";
+>>>>>>> origin/master
 		}
 			if($_SESSION['user']['niveau'] < 2)
 		{

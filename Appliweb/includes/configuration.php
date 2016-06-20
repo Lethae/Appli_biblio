@@ -1,8 +1,8 @@
 <?php
 // Base de données
 define('SERVEUR','base.iha.unistra.fr');
-define('USER','fries');
-define('PASSWORD','cha2035');
+define('USER','root');
+define('PASSWORD','mdp');
 define('BDD','fries_appliweb');
 
 // Application
