@@ -11,14 +11,14 @@ require_once('includes/header.php');
 require_once('template/header.php');
 
 // reception des variables get, post
-$action 	= isset($_GET['action']) ? $_GET['action'] : NULL ;
-$theme 		= isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ;
+$action 	= htmlentities(mysqli_real_escape_string($connexion, isset($_GET['action']) ? $_GET['action'] : NULL ));
+$theme 		= htmlentities(mysqli_real_escape_string($connexion, isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ));
 
-$login_r 		= isset($_POST['login_r']) ? $_POST['login_r'] : NULL ;
-$login 		= isset($_POST['login']) ? $_POST['login'] : NULL ;
-$password_r 	= isset($_POST['password_r']) ? $_POST['password_r'] : NULL ;
-$password 	= isset($_POST['password']) ? $_POST['password'] : NULL ;
-$email 	= isset($_POST['email']) ? $_POST['email'] : NULL ;
+$login_r 		= htmlentities(mysqli_real_escape_string($connexion, isset($_POST['login_r']) ? $_POST['login_r'] : NULL)) ;
+$login 		= htmlentities(mysqli_real_escape_string($connexion, isset($_POST['login']) ? $_POST['login'] : NULL ));
+$password_r 	= htmlentities(mysqli_real_escape_string($connexion, isset($_POST['password_r']) ? $_POST['password_r'] : NULL ));
+$password 	= htmlentities(mysqli_real_escape_string($connexion, isset($_POST['password']) ? $_POST['password'] : NULL)) ;
+$email 	= htmlentities(mysqli_real_escape_string($connexion, isset($_POST['email']) ? $_POST['email'] : NULL)) ;
 
 ?>
 	

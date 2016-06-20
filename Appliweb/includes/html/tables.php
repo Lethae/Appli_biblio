@@ -16,25 +16,50 @@ function getHtmlTable($array)
 	{	
 		$table.= "<tr>";
 		foreach ($item as $key => $value) {
-			$table.= "<td>".$value."</td>";
+			if($theme=='auteur' || $theme=='editeur') {
+			$table.= "<td><a href=index.php?recherche=$theme&action=lien&id=".$item['id'].">".$value."</a></td>";
+			}
+			elseif($theme=='livre'){
+			$table.= "<td><a href=index.php?recherche=$theme&action=lien&id=".$item['id_auteur'].">".$value."</a></td>";
+			}
+			else{
+			$table.= "<td>$value</td>";
+			}
 		}
-		$table.="<td><a href=index.php?recherche=$theme&action=modif&id=".$item['id'].">Modifier</a></td>";
-		$table.="<td><a href=index.php?recherche=$theme&action=suppr&id=".$item['id'].">Supprimer</a></td>";
+			if($_SESSION['user']['niveau'] < 2)
+		{
+			$table.="<td><a href=modif.php?recherche=$theme&id=".$item['id'].">Modifier</a></td>";
+			$table.="<td><a href=index.php?recherche=$theme&action=suppr&id=".$item['id'].">Supprimer</a></td>";
+		}
 		$table.= "</tr>";
 	}
 	$table.= "</table>";
-	if($theme=="auteur"){
-		echo "<a href=ajout.php?recherche=auteur>Ajouter un auteur</a>";
-	}
-	elseif ($theme =="livre"){
-		echo "<a href=ajout.php?recherche=livre>Ajouter un livre</a>";
-	}
-	else {
-		echo "<a href=ajout.php?recherche=utilisateur>Ajouter un utilisateur</a>";
-	}
-	
+	if($theme){
+		echo "<a href=ajout.php?recherche=$theme>Ajouter un $theme</a>";
+	}	
 	return $table;
 	return $value;
+}
+
+function getFiche($array) 
+{	
+	$theme = isset($_GET['recherche']) ? $_GET['recherche'] : 'auteur' ;
+	$table = "<table>";
+	foreach ($array as $item)
+	{	
+		$table.= "<tr>";
+		foreach ($item as $key => $value) {
+			$table.= "<td>$value</td>";
+		}
+			if($_SESSION['user']['niveau'] < 2)
+		{
+			$table.="<td><a href=modif.php?recherche=$theme&id=".$item['id'].">Modifier</a></td>";
+			$table.="<td><a href=index.php?recherche=$theme&action=suppr&id=".$item['id'].">Supprimer</a></td>";
+		}
+		$table.= "</tr>";
+	}
+	$table.= "</table>";	
+	return $table;
 }
 
 ?>

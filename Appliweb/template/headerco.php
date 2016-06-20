@@ -21,15 +21,16 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.php?recherche=auteur">Lister les auteurs</a></li>
-            <li><a href="index.php?recherche=livre">Lister les livres</a></li>
+            <li><a href="index.php?recherche=auteur">Auteurs</a></li>
+            <li><a href="index.php?recherche=livre">Livres</a></li>
+            <li><a href="index.php?recherche=editeur">Editeurs</a></li>			
 <?php
 	if($_SESSION['user']['niveau'] == 0)
 {
-	echo "<li><a href='index.php?recherche=utilisateur'>Utilisateurs</a></li>";
+	echo "			<li><a href='index.php?recherche=utilisateur'>Utilisateurs</a></li>";
 }
 ?>
-			<li><form class="search" action="index.php" method="post"><input name="search" placeholder="Search" type="text"/></form></li>
+			<li><form class="search" action="index.php?recherche=<?php echo $theme;?>" method="post"><input name="search" placeholder="Search" type="text"/></form></li>
             <li><a href="index.php?action=logout" class="deconnexion"><button type="submit" class="btn btn-primary">Se déconnecter</button></a></li>
           </ul>
         </div><!--/.nav-collapse -->
